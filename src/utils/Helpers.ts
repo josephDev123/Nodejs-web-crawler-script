@@ -1,4 +1,10 @@
+import * as cheerio from "cheerio";
+import { link } from "fs";
+
 export class Helpers {
+  // constructor(private readonly ) {
+  //   // this.cheerio =cheerio
+  // }
   static isValidUrl(url: string) {
     try {
       new URL(url);
@@ -26,5 +32,41 @@ export class Helpers {
       console.log("backwards slash");
       return;
     }
+  }
+
+  static async getHtmlBody(url: string) {
+    console.log(url);
+    try {
+      const response = await fetch(url);
+
+      // Check if the content-type is text/html
+      const contentType = response.headers.get("Content-Type");
+      if (contentType && contentType.includes("text/html")) {
+        const html = await response.text();
+        return html;
+      } else {
+        console.log("The content is not HTML.");
+        throw new Error("The content is not HTML.");
+      }
+    } catch (error: any) {
+      console.log(error);
+    }
+  }
+
+  static async getUrlLinksFromHtml(html: string) {
+    const $ = cheerio.load(html);
+    $.html();
+    // Array to store the extracted links
+    const linksArray: string[] = [];
+
+    // Iterate over each <a> element and extract the href attribute
+    $("a").each((i, link) => {
+      const href = $(link).attr("href");
+      if (href) {
+        linksArray.push(href);
+      }
+    });
+
+    return linksArray;
   }
 }
