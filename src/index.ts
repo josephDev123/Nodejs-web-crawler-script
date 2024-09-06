@@ -20,6 +20,7 @@ async function crawlPage(baseUrl: string, url: string, memo = {}) {
   // console.log(htmlBody!);
   // console.log(await Helpers.getHtmlBody(leadingSlash!));
   console.log("getting links body");
+  const links = await Helpers.getUrlLinksFromHtml(htmlBody!);
   console.log(await Helpers.getUrlLinksFromHtml(htmlBody!));
 }
 
