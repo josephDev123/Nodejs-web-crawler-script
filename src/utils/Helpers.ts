@@ -34,6 +34,14 @@ export class Helpers {
     }
   }
 
+  static TheSameHostVerify(baseUrl: string, sanitize_url: string) {
+    if (new URL(baseUrl).host == new URL(sanitize_url).host) {
+      return;
+    } else {
+      return false;
+    }
+  }
+
   static async getHtmlBody(url: string) {
     console.log(url);
     try {
@@ -49,7 +57,7 @@ export class Helpers {
         throw new Error("The content is not HTML.");
       }
     } catch (error: any) {
-      console.log(error);
+      console.log(error.message);
     }
   }
 

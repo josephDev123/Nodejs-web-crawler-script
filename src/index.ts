@@ -25,17 +25,23 @@ async function crawlPage(
     return memo;
   }
 
-  const leadingSlash = Helpers.sanitizeUrl(baseUrl, url);
-  if (leadingSlash === false) {
+  const sanitize_url = Helpers.sanitizeUrl(baseUrl, url);
+  if (sanitize_url === false) {
     return memo;
   }
-  // console.log(`Argument 1: ${leadingSlash}`);
+
+  const isSameHost = Helpers.TheSameHostVerify(baseUrl, sanitize_url);
+  if (isSameHost === false) {
+    return memo;
+  }
+  // console.log(`Argument 1: ${sanitize_url}`);
   console.log("getting html body");
-  const htmlBody = await Helpers.getHtmlBody(leadingSlash!);
+  const htmlBody = await Helpers.getHtmlBody(sanitize_url!);
   // console.log(htmlBody!);
-  // console.log(await Helpers.getHtmlBody(leadingSlash!));
+  // console.log(await Helpers.getHtmlBody(sanitize_url!));
   console.log("getting links ");
   const links = [...new Set(await Helpers.getUrlLinksFromHtml(htmlBody!))];
+  console.log(links);
   if (!links) {
     return memo;
   }
