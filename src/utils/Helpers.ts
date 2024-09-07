@@ -26,11 +26,11 @@ export class Helpers {
         return url;
       } else {
         console.log("invalid url");
-        return;
+        return false;
       }
     } catch (e) {
       console.log("backwards slash");
-      return;
+      return false;
     }
   }
 
@@ -54,6 +54,9 @@ export class Helpers {
   }
 
   static async getUrlLinksFromHtml(html: string) {
+    if (!html) {
+      return [];
+    }
     const $ = cheerio.load(html);
     $.html();
     // Array to store the extracted links
